@@ -1,0 +1,35 @@
+{
+  "name": "DevJohri",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@heroicons/react": "^2.1.5",
+    "bootstrap": "^5.3.3",
+    "clsx": "^2.1.1",
+    "next": "14.2.5",
+    "react": "^18",
+    "react-countup": "^6.5.3",
+    "react-dom": "^18",
+    "react-hot-toast": "^2.4.1",
+    "react-responsive-carousel": "^3.2.23",
+    "sonner": "^1.5.0",
+    "swiper": "^11.1.12",
+    "tailwind-merge": "^2.5.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.5",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
