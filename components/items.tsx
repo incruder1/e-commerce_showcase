@@ -1,60 +1,78 @@
 "use client";
 import { ItemsProps } from "@/types/index";
 import Image from "next/image";
-import Link from "next/link";
-import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useState } from "react"; // Import useState for managing state
+import { useState, useRef } from "react"; // Import useState, useRef for managing state and DOM references
 import img1 from "@/public/assets/img1.jpg";
 import Modal from "@/components/Modal";
+import { useCart } from "@/context/CartContext";
 
 export const Items = ({ item }: ItemsProps) => {
   const { cart, addToCart, updateQuantity } = useCart();
   const quantity = cart[item.id] || 0;
   const router = useRouter();
 
-  // State to manage the modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Refs for image and hidden cart icon
+  const imgRef = useRef<HTMLImageElement>(null);
+  const cartIconRef = useRef<HTMLDivElement>(null); // Set a ref for the hidden cart icon
+
+  // Handle modal open/close
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  // Handle add to cart and animation
   const handleAddToCart = () => {
     addToCart(item.id);
+    animateFlyToCart();
   };
 
-  const handleIncreaseQuantity = () => {
-    if (quantity >= 20) {
-      toast.error("Sorry! Only 20 items allowed at a time", {
-        position: "top-center",
-        duration: 500,
-      });
-      return;
-    }
-    updateQuantity(item.id, quantity + 1);
-  };
+  const animateFlyToCart = () => {
+    if (!imgRef.current || !cartIconRef.current) return;
 
-  const handleDecreaseQuantity = () => {
-    if (quantity >= 1) {
-      updateQuantity(item.id, quantity - 1);
-    }
-  };
+    const img = imgRef.current;
+    const cartIcon = cartIconRef.current;
+    
+    // Clone the image for animation
+    const flyingImg = img.cloneNode(true) as HTMLImageElement;
+    flyingImg.style.position = "absolute";
+    flyingImg.style.zIndex = "1000";
+    flyingImg.style.transition = "transform 2s ease-in-out";
+    
+    // Append flying image to the body
+    document.body.appendChild(flyingImg);
 
-  // Function to open the modal
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+    const imgRect = img.getBoundingClientRect();
+    const cartRect = cartIcon.getBoundingClientRect();
 
-  // Function to close the modal
-  const closeModal = () => {
-    setIsModalOpen(false);
+    // Set initial position of the flying image
+    flyingImg.style.left = `${imgRect.left}px`;
+    flyingImg.style.top = `${imgRect.top}px`;
+    flyingImg.style.width = `${imgRect.width}px`;
+    flyingImg.style.height = `${imgRect.height}px`;
+
+    // Trigger the animation to the hidden cart icon in the top-right
+    setTimeout(() => {
+      flyingImg.style.transform = `translate(${cartRect.left-imgRect.left  }px, ${
+        cartRect.top - imgRect.top
+      }px) scale(0.2)`;
+    }, 100); // Small delay for smooth transition
+
+    // Clean up after animation completes
+    setTimeout(() => {
+      document.body.removeChild(flyingImg);
+    }, 1000);
   };
 
   return (
     <>
       <div
         className="flex w-full flex-col items-center rounded-lg bg-neutral-200 p-2 shadow-sm border-2 transition duration-300 ease-in-out transform hover:shadow-xl"
-       // Open modal on card click
       >
         <Image
+          ref={imgRef} // Reference to the image for animation
           src={img1}
           alt={item.title}
           width={50}
@@ -63,7 +81,7 @@ export const Items = ({ item }: ItemsProps) => {
           layout="responsive"
           priority={true}
           className="min-h-[10rem] object-cover"
-          onClick={openModal} 
+          onClick={openModal}
         />
         <p className="base-semibold mt-4">
           {item.title.length > 30
@@ -81,22 +99,20 @@ export const Items = ({ item }: ItemsProps) => {
         ) : (
           <div className="flex items-center justify-center my-4 w-full">
             <button
-              onClick={handleDecreaseQuantity}
+              onClick={() => updateQuantity(item.id, quantity - 1)}
               className="px-4 py-2 bg-red-500 text-white rounded-l"
             >
               -
             </button>
             <span className="px-4 py-2 bg-gray-200">{quantity}</span>
             <button
-              onClick={handleIncreaseQuantity}
+              onClick={() => updateQuantity(item.id, quantity + 1)}
               className="px-4 py-2 bg-green-500 text-white rounded-r"
             >
               +
             </button>
             <button
-              onClick={() => {
-                router.push("/checkout");
-              }}
+              onClick={() => router.push("/checkout")}
               className="px-4 py-2 ml-2 bg-blue-500 text-white rounded"
             >
               View Cart
@@ -106,6 +122,14 @@ export const Items = ({ item }: ItemsProps) => {
       </div>
 
       <Modal isOpen={isModalOpen} onClose={closeModal} item={item} />
+
+      {/* Hidden Cart icon placeholder at the top right */}
+      <div
+        ref={cartIconRef}
+        className="fixed top-4 right-20 invisible p-4 bg-gray-800 text-white rounded-full"
+      >
+        🛒
+      </div>
     </>
   );
 };

@@ -9,6 +9,7 @@ import { CheckIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import { CardItem } from "@/components/CardItem.component";
 import productItem from "@/constant/products.json";
 import { Header } from "@/components/Header";
+import img1 from "@/public/assets/img1.jpg";
 
 import { useRouter } from "next/navigation";
 type Props = {};
@@ -29,7 +30,7 @@ const discountData = [
     discount: 20,
   },
   {
-    code: "ARPITBHAIYAOP",
+    code: "ASPIRE",
     discountType: DISCOUNT_TYPES.FLAT,
     discount: 200,
   },
@@ -180,7 +181,7 @@ clearCart();
       <Header />
       <div className="min-h-screen bg-my-background-1000 text-my-text-100">
         <div className="container mx-auto px-4 py-12">
-          <h1 className="text-3xl sm:text-4xl font-semibold mb-4 sm:mb-12 flex flex-col sm:flex-row items-center gap-2 whitespace-nowrap justify-center font-bold">
+          <h1 className="text-3xl sm:text-4xl  mb-4 sm:mb-12 flex flex-col sm:flex-row items-center gap-2 whitespace-nowrap justify-center font-bold">
             Shopping Cart
           </h1>
           {products.length === 0 ? (
@@ -209,7 +210,8 @@ clearCart();
                   : "animate-out fade-out-0"
               )}
             >
-              <div className="space-y-2 w-full lg:w-3/5 bg-my-accent-950 rounded-lg p-3 overflow-y-auto max-h-[70vh] h-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar]:h-0 [&::-webkit-scrollbar-thumb]:bg-slate-600 [&::-webkit-scrollbar-track]:bg-slate-500 border">
+              <div className="space-y-2 w-full lg:w-3/5 bg-my-accent-950 rounded-lg p-2 overflow-y-auto max-h-[70vh] h-fit [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar]:h-0 [&::-webkit-scrollbar-thumb]:bg-slate-600
+               [&::-webkit-scrollbar-track]:bg-slate-500 border">
                 {products.map((product) => {
                   const quantity = cart[product.id];
                   return (
@@ -232,7 +234,7 @@ clearCart();
                     </h1>
                   </div>
                   <p className="mb-4 text-my-text-950 flex items-center justify-between text-sm font-bold">
-                    ARPITBHAIYAOP <p>200%</p>
+                    Aspire <p>200%</p>
                    
                   </p>
                   <p className="mb-4 text-my-text-950 flex items-center justify-between text-sm font-bold">

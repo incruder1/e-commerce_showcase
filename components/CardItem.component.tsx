@@ -1,6 +1,8 @@
 import React from 'react'
 import { Product } from '@/types/index'
 import Image from 'next/image'
+import img1 from "@/public/assets/img1.jpg";
+
 type Props = {}
 
 export const CardItem = ({product,
@@ -13,17 +15,17 @@ export const CardItem = ({product,
     removeItem: (id: number) => void;
   }) => {
   return (
-    <div className="flex items-center space-x-5 lg:h-20 sm:h-auto w-full border rounded-md bg-slate-100 hover:size-[20rem] ">
+    <div className="flex items-center space-x-5 lg:h-20  sm:h-auto w-full border rounded-md bg-slate-100  ">
     <Image
-      src={product.image}
+      src={img1}
       alt={product.title}
       className="w-16 h-16 object-cover rounded-lg"
       width={64}
       height={64}
     />
-    <div className="flex flex-col sm:flex-row w-full gap-4">
+    <div className="flex flex-col sm:flex-row w-full gap-2">
       {/* title and price container */}
-      <div className="flex justify-between sm:flex-col gap-4 w-full ">
+      <div className="flex justify-evenly sm:flex-col  w-full ">
         <h2 className="text-sm sm:text-sm font-medium">{product.title}</h2>
         {/* cost of the product (with quantity) */}
         <p className="text-base">
